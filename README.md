@@ -133,6 +133,22 @@ public class IntegerFactorization {
 Also for `BenchmarkAttribute` you can use `Name` and `Description` to provide additional information.
 Multiple benchmarks can be grouped together into a **suite** but measures are not correlated.
 
+If you need to initialize some data for your tests (and eventually perform some clean-up) you can freely mix one or more of these:
+* To setup: declare a default constructor.
+* To setup: declare one or more public `void` and parameterless instance methods (can be virtual) and mark it with `SetUpBenchmarkAttribute`. Execution order is not granted.
+* To cleanup: implement `IDisposable`.
+* To cleanup: declare one or more public `void` and parameterless instance methods (can be virtual) and mark it with `CleanUpBenchmarkAttribute`. Execution order is not granted.
+
+Setup (and symmetric cleanup) code will be executed for each run of each method, don't forget it if you have to perform some very expensive initialization code. Code is executed each time in separate a new `AppDomain` then you can't share resources between instances. To workaround this (unless you want - but you shouldn't - set `BenchmarkEngineOptions.RunInIsolation` to `false`) you may save values into the _main_ `AppDomain`. To do it you need to write your own `MarshalByRefObject` and expose it to other domains through `AppDomain.SetData()`, like this:
+
+```C#
+AppDomain.CurrentDomain("__BenchmarkCrossDomainData",
+    new MyCrossDomainServiceRepository());
+```
+
+Note that cross-domain communication is slow then it must not be done only inside setup/cleanup methods, also don't
+forget that data you exchange must be derive from `MarshalByReRefObject` or marked as `[Serializable]`.
+
 ##Statistics
 This tool provide just one simple implementation for measures analysis, I don't think we need advanced
 statistical methods for simple microbenchmarks then a naive average may be enough. Proposed `BasicStatistics`
