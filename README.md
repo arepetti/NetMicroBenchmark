@@ -18,7 +18,7 @@ public class MyBenchmark {
 }
 ```
 
-Now you can run that benchmark, render its output to HTML and display results simply with this:
+Now you can run that benchmark, render its output to HTML and display results simply with this (don't forget to add a reference to `MicroBenchmark.Engine.dll`):
 
 ```C#
 class Program {
@@ -43,7 +43,8 @@ using `BenchmarkEngineOptions.SearchMethod`: classes and methods may be marked w
 attributes or simply using a naming convention.
 * Each method is then executed many times and its execution time is recordered. Using `BenchmarkOptions.Repetitions`
 or `BenchmarkedMethodAttribute` you can specify how many measures you want to perform. By default each execution
-is performed in a separate `AppDomain` to minimize interference between tests.
+is performed in a separate `AppDomain` to minimize interference between tests. To use attributes you need a reference
+to `MicroBenchmark.dll`.
 * These _measures_ are then aggregated to produce some indices. You need to specify which calculations you want
 to perform, this tool ships a simple `BasicStatistics` class with a minimal statistical analysis.
 * All collected data is then rendered into an output file. You can use any `OutputRenderer` you want;
@@ -148,4 +149,9 @@ to customize report content and appearance or directly modify `DefaultTemplate.h
 
 `HtmlOutputRenderer` has only two public properties: `Statistics` to set the set of analysis to
 perform and `TemplatePath` to set the full path of the HTML template to use to generate output report.
+
+Default template uses [Bootstrap](http://getbootstrap.com) and [Highcharts](http://www.highcharts.com) (via CDN)
+and its output looks like this:
+
+![Performance report example](https://raw.githubusercontent.com/arepetti/NetMicroBenchmark/master/ReportScreenshot.png)
 
