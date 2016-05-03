@@ -139,7 +139,10 @@ If you need to initialize some data for your tests (and eventually perform some 
 * To cleanup: implement `IDisposable`.
 * To cleanup: declare one or more public `void` and parameterless instance methods (can be virtual) and mark it with `CleanUpBenchmarkAttribute`. Execution order is not granted.
 
-Setup (and symmetric cleanup) code will be executed for each run of each method, don't forget it if you have to perform some very expensive initialization code. Code is executed each time in separate a new `AppDomain` then you can't share resources between instances. To workaround this (unless you want - but you shouldn't - set `BenchmarkEngineOptions.RunInIsolation` to `false`) you may save values into the _main_ `AppDomain`. To do it you need to write your own `MarshalByRefObject` and expose it to other domains through `AppDomain.SetData()`, like this:
+Setup (and symmetric cleanup) code will be executed for each run of each method, don't forget it if you have to perform some very expensive initialization code. Code is executed each time in separate a new `AppDomain` then you can't share resources between instances. To workaround this (unless you want - but you shouldn't - set `BenchmarkEngineOptions.RunInIsolation` to `false`) you have two options:
+
+* Prepare your data before you run the test (this is viable only if data can stay on disk and then simply loaded during test initialization).
+* Save values into the _main_ `AppDomain`. To do it you need to write your own `MarshalByRefObject` and expose it to other domains through `AppDomain.SetData()`, like this:
 
 ```C#
 AppDomain.CurrentDomain("__BenchmarkCrossDomainData",
