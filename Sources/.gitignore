@@ -1,7 +1,7 @@
-# Output and temporary directories
+*.suo
+
 bin/
 obj/
 TestResults
 
-# binaries for installed packages
 packages/**/lib
