@@ -131,11 +131,29 @@ Multiple benchmarks can be grouped together into a **suite** but measures are no
 ##Statistics
 This tool provide just one simple implementation for measures analysis, I don't think we need advanced
 statistical methods for simple microbenchmarks then a naive average may be enough. Proposed `BasicStatistics`
-implementation also calculates few dispersion indices, they're not useful to evaluate code performance but
-to determine benchmark _quality_.
+implementation also calculates few dispersion indices, they may be useful to determine benchmark _quality_
+but also to have a better view of what happen in a complex scenario like this one:
+
+```C#
+public class Benchmark {
+    public void DownloadAllFiles() {
+        foreach (var fileToDownload in GetFilesToDownload()) {
+            DownloadFileWithHttp(fileToDownload.LocalPath, fileToDownload.ServerUrl);
+        }
+    }
+
+    public void DownloadAllFiles() {
+        Parallel.ForEach(GetFilesToDownload(), fileToDownload =>  {
+            DownloadFileWithHttp(fileToDownload.LocalPath, fileToDownload.ServerUrl);
+        });
+    }
+
+    // ...
+}
+```
 
 Note that statistical analysis is not mandatory and you _may_ have an `OutputRenderer` which directly
-work with raw measures produced by `BenchmarkEngine`.
+work with raw measures produced by `BenchmarkEngine`. See for example #4.
 
 To increase measure quality `BasicStatistics` implementation provides a `CutTails` property which
 enable a _trimmed average_ where best and worst results (one for each tail) are ignored. If you wish
