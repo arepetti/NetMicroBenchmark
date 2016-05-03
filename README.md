@@ -136,14 +136,21 @@ but also to have a better view of what happen in a complex scenario like this on
 
 ```C#
 public class Benchmark {
-    public void DownloadAllFiles() {
+    public void SerialDownload() {
         foreach (var fileToDownload in GetFilesToDownload()) {
             DownloadFileWithHttp(fileToDownload.LocalPath, fileToDownload.ServerUrl);
         }
     }
 
-    public void DownloadAllFiles() {
+    public void ParallelDownload() {
         Parallel.ForEach(GetFilesToDownload(), fileToDownload =>  {
+            DownloadFileWithHttp(fileToDownload.LocalPath, fileToDownload.ServerUrl);
+        });
+    }
+
+    public void LimitedParallelDownload() {
+        var options = new ParallelOptions { MaxDegreeOfParallelism = 4 };
+        Parallel.ForEach(GetFilesToDownload(), options, fileToDownload =>  {
             DownloadFileWithHttp(fileToDownload.LocalPath, fileToDownload.ServerUrl);
         });
     }
