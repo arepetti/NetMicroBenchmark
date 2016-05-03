@@ -122,9 +122,23 @@ Multiple benchmarks can be grouped together into a **suite** but measures are no
 
 ##Statistics
 This tool provide just one simple implementation for measures analysis, I don't think we need advanced
-statistical methods for simple microbenchmarks then a naive average may be enough.
+statistical methods for simple microbenchmarks then a naive average may be enough. Proposed `BasicStatistics`
+implementation also calculates few dispersion indices, they're not useful to evaluate code performance but
+to determine benchmark _quality_.
 
-TODO
+Note that statistical analysis is not mandatory and you _may_ have an `OutputRenderer` which directly
+work with raw measures produced by `BenchmarkEngine`.
+
+To increase measure quality `BasicStatistics` implementation provides a `CutTails` property which
+enable a _trimmed average_ where best and worst results (one for each tail) are ignored. If you wish
+to visualize also JIT compilation overhead (setting `BenchmarkEngineOptions.WarmUp` to `false`) then
+you probably also want to keep this property to `false`.
 
 ##Output
-TODO
+Currently the only `OutputRenderer` implementation is for an HTML document. Performance report is
+generated from a template file (preprocessed with mustache-sharp). You can write your own templates
+to customize report content and appearance or directly modify `DefaultTemplate.html`.
+
+`HtmlOutputRenderer` has only two public properties: `Statistics` to set the set of analysis to
+perform and `TemplatePath` to set the full path of the HTML template to use to generate output report.
+
