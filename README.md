@@ -194,7 +194,9 @@ you probably also want to keep this property to `false`.
 ##Output
 Currently the only `OutputRenderer` implementation is for an HTML document. Performance report is
 generated from a template file (preprocessed with mustache-sharp). You can write your own templates
-to customize report content and appearance or directly modify `DefaultTemplate.html`.
+to customize report content and appearance or directly modify `DefaultTemplate.html`. Plain text
+reports are supported through `TextOutputRenderer` base class (which is also the base implementation
+for `HtmlOutputRenderer`.
 
 `HtmlOutputRenderer` has only two public properties: `Statistics` to set the set of analysis to
 perform and `TemplatePath` to set the full path of the HTML template to use to generate output report.
