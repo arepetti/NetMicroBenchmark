@@ -65,6 +65,7 @@
     <Compile Include="Renderer\HtmlOutputRenderer.cs" />
     <Compile Include="Renderer\MustacheJoinTagDefinition.cs" />
     <Compile Include="Renderer\OutputRenderer.cs" />
+    <Compile Include="Renderer\TextOutputRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MicroBench\MicroBench.csproj">

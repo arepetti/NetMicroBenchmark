@@ -30,7 +30,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace AutomaticTest
 {
 	[TestClass]
-	public sealed class BasicStatisticsTest : TestBase
+	public sealed class BasicStatisticsTests : TestBase
 	{
 		[TestMethod]
 		public void ValuesHaveRequiredOrder()
