@@ -28,6 +28,13 @@ class Program {
 }
 ```
 
+If you need a quick benchmark you may simply edit `Benchmark.cs` in `Tests/ManualTest.exe`, it is a console application
+with the sole purpose to show you how to use this tool.
+
+Do you want to write your own fancy user interface to quickly write tests? Don't forget to also take a look to
+`BenchmarkEngine.SuiteProgressChanged` and `BenchmarkEngine.BenchmarkProgressChanged` events, tests may take a long
+time to run and users should be informed about what is going on.
+
 ## How It Works
 Logic is simple and straightforward:
 * Each class is a separate benchmark and each method is a test which
