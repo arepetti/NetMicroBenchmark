@@ -1,0 +1,7 @@
+# Output and temporary directories
+bin/
+obj/
+TestResults
+
+# binaries for installed packages
+packages/**/lib

@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>MicroBenchmark Report</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+    <style type="text/css">
+        body
+        {
+            margin: 16px auto 16px auto;
+            padding: 0 16px 0 16px;
+            max-width: 1200px;
+        }
+
+        table.result-table
+        {
+            width: 100%;
+            margin-bottom: 32px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Performance comparison report <small>{{Timestamp}}</small></h1>
+    {{#each Benchmarks}}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {{Name}} <small>{{Description}}</small>
+                <br />
+                <span class="text-muted small">Total execution time: {{ExecutionTime.TotalSeconds}} seconds</span>
+            </div>
+            <div class="panel-body">
+                <table class="table-condensed result-table">
+                    <thead>
+                        <tr>
+                            <th>Test</th>
+                            {{#each Headers}}
+                            <th class="text-right">{{this}}</th>
+                            {{/each}}
+                        </tr>
+                        <tr>
+                            <td></td>
+                            {{#each Headers}}
+                            <td class="text-muted text-right">[ms]</td>
+                            {{/each}}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each Tests}}
+                            <tr>
+                                <td>
+                                    <span title="{{Description}}">{{Name}}</span>
+                                    {{#if IsBest}} <span class="label label-success">best</span>{{/if}}
+                                </td>
+                                {{#each Results}}
+                                <td class="text-right">{{Value.TotalMilliseconds:0.#}}</td>
+                                {{/each}}
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+
+                <div class="row">
+                    <div class="col-sm-12 col-lg-6">
+                        <div id="chart-overview-{{Id}}"></div>
+                    </div>
+                    <div class="col-sm-12 col-lg-6">
+                        <div id="chart-detailed-{{Id}}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{/each}}
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+    <script type="text/javascript" src="http://code.highcharts.com/highcharts.js"></script>
+    <script type="text/javascript" src="http://code.highcharts.com/highcharts-more.js"></script>
+    
+    <script type="text/javascript">
+        $(document).ready(function () {
+            {{#each Benchmarks}}
+                $("#chart-detailed-{{Id}}").highcharts({
+                    chart: {
+                        type: "boxplot"
+                    },
+
+                    title: {
+                        text: "Details (distribution)"
+                    },
+                
+                    xAxis: {
+                        type: "category",
+                        categories: [{{#join Tests 'Name'}}],
+                    },
+
+                    yAxis: {
+                        title: {
+                            text: "ms"
+                        }
+                    },
+
+                    legend: {
+                        enabled: false
+                    },
+
+                    series: [{
+                        data: [{{#each Tests}}[{{#join Results 'Value.TotalMilliseconds'}}],{{/each}}]
+                    }]          
+                });
+
+                $("#chart-overview-{{Id}}").highcharts({
+                    chart: {
+                        type: "column"
+                    },
+
+                    title: {
+                        text: "Overview (average)"
+                    },
+                
+                    xAxis: {
+                        type: "category",
+                        categories: [{{#join Tests 'Name'}}],
+                    },
+
+                    yAxis: {
+                        title: {
+                            text: "ms"
+                        }
+                    },
+
+                    legend: {
+                        enabled: false
+                    },
+
+                    series: [{
+                        data: [{{#join Tests 'SignificativeMeasure.TotalMilliseconds'}}]
+                    }]
+                });
+            {{/each}}
+        });
+    </script>
+</body>
+</html>

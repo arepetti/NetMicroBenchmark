@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>mustache-sharp</id>
+    <version>0.2.9.0</version>
+    <title>mustache-sharp</title>
+    <authors>truncon</authors>
+    <owners>truncon</owners>
+    <projectUrl>http://github.com/jehugaleahsa/mustache-sharp</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A extension of the mustache text template engine for .NET.</description>
+    <copyright>Copyright 2013</copyright>
+    <tags>mustache handlebars.js text generation building template</tags>
+  </metadata>
+</package>
