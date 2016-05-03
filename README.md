@@ -8,6 +8,11 @@ graphical format. Before writing your tests and trying to analyze results you sh
 microbenchmarks, especially to understand their limits. Also don't forget that this tool is not intended to
 facilitate output quality measurament but merely its computation performance.
 
+Note that the same infrastructure may be used also to perform other performance tests which involves, for example, I/O
+which are usually excluded from microbenchmarks. There are more complete and sophisticated tools to perform such
+tests (because you probably also need to interpolate measures with system performance and resources) but you may
+use this tool also to performe a first indicatie analysis.
+
 ##First benchmark
 To write your first benchmark you have to write a _discoverable_ class:
 
@@ -18,7 +23,7 @@ public class MyBenchmark {
 }
 ```
 
-Now you can run that benchmark, render its output to HTML and display results simply with this (don't forget to add a reference to `MicroBenchmark.Engine.dll`):
+Now you can run that benchmark, render its output to HTML and display results simply with this (don't forget to add a reference to `MicroBench.Engine.dll`):
 
 ```C#
 class Program {
@@ -44,7 +49,7 @@ attributes or simply using a naming convention.
 * Each method is then executed many times and its execution time is recordered. Using `BenchmarkOptions.Repetitions`
 or `BenchmarkedMethodAttribute` you can specify how many measures you want to perform. By default each execution
 is performed in a separate `AppDomain` to minimize interference between tests. To use attributes you need a reference
-to `MicroBenchmark.dll`.
+to `MicroBench.dll`.
 * These _measures_ are then aggregated to produce some indices. You need to specify which calculations you want
 to perform, this tool ships a simple `BasicStatistics` class with a minimal statistical analysis.
 * All collected data is then rendered into an output file. You can use any `OutputRenderer` you want;
