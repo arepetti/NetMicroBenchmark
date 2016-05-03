@@ -158,9 +158,14 @@ namespace MicroBench.Engine
 		private static AppDomain CreateAppDomainForTest()
 		{
 			// To be "compatible" with unit testing we need to be sure all AppDomains have the same application base
-			return AppDomain.CreateDomain("BenchmarkPerformerAd", 
+			var appDomain = AppDomain.CreateDomain("BenchmarkPerformerAd", 
 				new Evidence(AppDomain.CurrentDomain.Evidence),
 				new AppDomainSetup { ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase });
+
+			appDomain.SetData("__BenchmarkCrossDomainData", 
+				AppDomain.CurrentDomain.GetData("__BenchmarkCrossDomainData"));
+
+			return appDomain;
 		}
 
 		private sealed class DisposableWrapper : IDisposable
