@@ -147,7 +147,7 @@ Setup (and symmetric cleanup) code will be executed for each run of each method,
 * Save values into the _main_ `AppDomain`. To do it you need to write your own `MarshalByRefObject` and expose it to other domains through `AppDomain.SetData()`, like this:
 
 ```C#
-AppDomain.CurrentDomain("__BenchmarkCrossDomainData",
+AppDomain.CurrentDomain.SetData("__BenchmarkCrossDomainData",
     new MyCrossDomainServiceRepository());
 ```
 
