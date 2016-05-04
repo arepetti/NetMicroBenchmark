@@ -22,30 +22,36 @@
 //
 
 using System;
-using System.Diagnostics;
+using System.Linq;
 using System.IO;
-using System.Reflection;
+using DocumentFormat.OpenXml.Packaging;
 using MicroBench.Engine;
-using MicroBench.Engine.Calculations;
 using MicroBench.Engine.Renderer;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace ManualTest
+namespace AutomaticTest
 {
-	class Program
+	[TestClass]
+	public sealed class ExcelOutputRendererTests : TestBase
 	{
-		static void Main()
+		[TestMethod]
+		public void OutputIsValidXlsx()
 		{
-			Console.WriteLine("Performing benchmarks...");
-			//Process.Start(BenchmarkEngine.ExecuteAndRenderWithDefaults(null, new BenchmarkOptions { Repetitions = 10 }));
-
-			var engine = new BenchmarkEngine(new BenchmarkOptions { Repetitions = 10 }, new Assembly[] { typeof(Program).Assembly });
+			// Just one repetition, we do not really care about results
+			var engine = CreateEngine<KnownBenchmark>(new BenchmarkOptions() { Repetitions = 1 });
 			var renderer = new ExcelOutputRenderer();
 
-			string outputPath = Path.Combine(Path.GetTempPath(), DateTime.Now.Ticks.ToString() + ".xlsx");
-			renderer.RenderTo(outputPath, engine.Execute());
+			var content = renderer.Render(engine.Execute());
 
-			Process.Start(outputPath);
-
+			using (var stream = new MemoryStream(content))
+			using (var document = SpreadsheetDocument.Open(stream, false))
+			{
+				// Unless we find any bug in content then we just check
+				// this is a valid XLSX document with one worksheet (it has to contain
+				// one worksheet per benchmark).
+				Assert.IsNotNull(document.WorkbookPart);
+				Assert.AreEqual(document.WorkbookPart.WorksheetParts.Count(), 1);
+			}
 		}
 	}
 }

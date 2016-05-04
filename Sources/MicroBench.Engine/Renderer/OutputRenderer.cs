@@ -80,7 +80,7 @@ namespace MicroBench.Engine.Renderer
 		/// <exception cref="ArgumentException">
 		/// If any element of <paramref name="benchmarks"/> is <see langword="null"/>.
 		/// </exception>
-		public void RenderTo(string outputPath, IEnumerable<Benchmark> benchmarks)
+		public virtual void RenderTo(string outputPath, IEnumerable<Benchmark> benchmarks)
 		{
 			File.WriteAllBytes(outputPath, Render(benchmarks));
 		}

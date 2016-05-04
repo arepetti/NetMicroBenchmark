@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>SpreadsheetLight</id>
+    <version>3.4.4</version>
+    <title>SpreadsheetLight</title>
+    <authors>Vincent Tan</authors>
+    <owners>Vincent Tan</owners>
+    <licenseUrl>http://spreadsheetlight.com/license/</licenseUrl>
+    <projectUrl>http://spreadsheetlight.com/</projectUrl>
+    <iconUrl>http://spreadsheetlight.com/images/spreadsheetlightlogo.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>SpreadsheetLight is an open source Open XML spreadsheet library for .NET Framework written in C#, and is released under the MIT License. You can create new Open XML spreadsheets, or work with existing Open XML spreadsheets that are compatible with Microsoft Excel 2007/2010/2013 and LibreOffice Calc.
+
+No Office/Excel Interop needed. You do not need Microsoft Office/Excel to be installed.
+
+Dependency: Open XML SDK 2.0 (not 2.5)</description>
+    <summary>SpreadsheetLight is an Open XML spreadsheet library compatible with Microsoft Excel 2007/2010/2013 and LibreOffice Calc.</summary>
+    <releaseNotes>You can read the full list of changes at http://spreadsheetlight.com/version-history/ Note that source code is only available up to minor releases, meaning Major.Minor.0 versions.
+
+Version 3.4.4
+- Bug fix: Formulas will be correctly changed when columns are deleted (when the formula involves said deleted columns).
+
+Version 3.4.3
+- Bug fix: Cell value/formula set on a shared cell formula base cell now works correctly. For example, setting on C3 when C3 holds a shared cell formula will work.
+- Bug fix: Setting filter on worksheet now works correctly. It failed to sort before (basically also need to set underlying defined name _xlnm._FilterDatabase. Gawdiggitty.)
+
+Version 3.4.2
+- You can now get row/column grouping levels. See GetRowGroupLevel() and GetColumnGroupLevel() functions.
+- You can now get a list of the shared cell formulas in the currently selected worksheet. See GetSharedCellFormulas() function.
+- Cell formulas are now more correctly maintained when copying/inserting/deleting cells/rows/columns.
+- Catered for situation where cell reference ranges aren't in top-left to bottom-right format (such as E1:A7). See SLTool for translating reference sequences to SLCellPointRange and vice versa. Don't worry, you probably wouldn't have known about this anyway...
+- You can now draw borders on a cell range! And border grids! Try out the DrawBorder() and DrawBorderGrid() functions.
+- You can now merge cells and set style/border properties at the same time! No more manual border drawing on merged cells! Woohoo! See MergeWorksheetCells() function overloads.
+- You can now make SpreadsheetLight throw up, I mean, throw exceptions! When there are exceptions, of course. See ThrowExceptionsIfAny property. Not sure how much help this is though...
+- You can now forcibly get a boolean value if it looks like it's a boolean but actually stored as text. See the GetCellValueAsBoolean() functions.
+- Breaking change: SLCellFormula.Reference data type changed from string to List&lt;SLCellPointRange&gt; (but you shouldn't have been using this anyway...)
+- Bug fix: The properties "count" and "uniqueCount" removed from shared strings table part. It seems a high number of shared strings will cause the calculation to render a corrupt file. See when writing the shared strings table for details.
+- Bug fix: Outline (grouping) levels of rows and columns now limited to 0 to 7 (was allowed to go to 8 previously. See GroupRows() and GroupColumns() in RowColumnFunctions.cs)
+
+Version 3.4.1
+- Removed optional argument use (specifically IsStylish) so that developers using Visual Studio 2008 (.NET Framework 3.5) can still compile the source code.
+- Optimised GetWorksheetStatistics(). It's now faster and less memory intensive.
+- Bug fix: autofitting rows with a smaller initial height now correctly autofit to content
+- Bug fix (?): SLStyle.MergeStyle() now takes on the new style object's format code regardless.</releaseNotes>
+    <copyright>Vincent Tan</copyright>
+    <tags>excel spreadsheet openxml ooxml xlsx txt csv</tags>
+  </metadata>
+</package>

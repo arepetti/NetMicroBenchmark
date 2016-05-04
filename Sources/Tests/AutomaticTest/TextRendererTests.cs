@@ -47,6 +47,7 @@ namespace AutomaticTest
 
 		private byte[] Render<T>()
 		{
+			// Just one repetition, we do not really care about results
 			var engine = CreateEngine<T>(new BenchmarkOptions() { Repetitions = 1 });
 			var renderer = new TextOutputRenderer
 			{
@@ -54,7 +55,6 @@ namespace AutomaticTest
 				TemplatePath = Path.Combine(Environment.CurrentDirectory, "PlainTextTemplate.txt")
 			};
 
-			// Just one repetition, we do not really care about results
 			var output = renderer.Render(engine.Execute());
 
 			// First simple check to be sure we actually have something to test
