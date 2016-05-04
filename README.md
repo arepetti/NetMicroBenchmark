@@ -3,6 +3,9 @@ This is a small tool to perform microbenchmarks (performance comparison of small
 it is not magic then do not expect you can write algorithms you want to compare and blindless run this benchmark
 to get meaningful results: you will not.
 
+Default output report looks like this but you can customize it in the way you prefer (or export gathered data
+to be analyzed in Microsoft Excel):
+
 ![Performance report example](https://raw.githubusercontent.com/arepetti/NetMicroBenchmark/master/ReportScreenshot.png)
 
 That said this tool is useful to have a first rough idea of code performance and get results in an easy to understand
@@ -203,6 +206,5 @@ for `HtmlOutputRenderer`.
 `HtmlOutputRenderer` has only two public properties: `Statistics` to set the set of analysis to
 perform and `TemplatePath` to set the full path of the HTML template to use to generate output report.
 
-Default template uses [Bootstrap](http://getbootstrap.com) and [Highcharts](http://www.highcharts.com) (via CDN)
-and its output looks like this:
+Default template uses [Bootstrap](http://getbootstrap.com) and [Highcharts](http://www.highcharts.com) (via CDN).
 
