@@ -3,15 +3,17 @@ This is a small tool to perform microbenchmarks (performance comparison of small
 it is not magic then do not expect you can write algorithms you want to compare and blindless run this benchmark
 to get meaningful results: you will not.
 
+![Performance report example](https://raw.githubusercontent.com/arepetti/NetMicroBenchmark/master/ReportScreenshot.png)
+
 That said this tool is useful to have a first rough idea of code performance and get results in an easy to understand
 graphical format. Before writing your tests and trying to analyze results you should read one good tutorial about
 microbenchmarks, especially to understand their limits. Also don't forget that this tool is not intended to
-facilitate output quality measurament but merely its computation performance.
+facilitate output quality measurement but merely its computation performance.
 
 Note that the same infrastructure may be used also to perform other performance tests which involves, for example, I/O
 which are usually excluded from microbenchmarks. There are more complete and sophisticated tools to perform such
 tests (because you probably also need to interpolate measures with system performance and resources) but you may
-use this tool also to performe a first indicatie analysis.
+use this tool also to perform a first indicative analysis.
 
 ##First benchmark
 To write your first benchmark you have to write a _discoverable_ class:
@@ -203,6 +205,4 @@ perform and `TemplatePath` to set the full path of the HTML template to use to g
 
 Default template uses [Bootstrap](http://getbootstrap.com) and [Highcharts](http://www.highcharts.com) (via CDN)
 and its output looks like this:
-
-![Performance report example](https://raw.githubusercontent.com/arepetti/NetMicroBenchmark/master/ReportScreenshot.png)
 
