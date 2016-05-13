@@ -197,8 +197,8 @@ to visualize also JIT compilation overhead (setting `BenchmarkEngineOptions.Warm
 you probably also want to keep this property to `false`.
 
 ##Output
-Currently the only `OutputRenderer` implementation is for an HTML document. Performance report is
-generated from a template file (preprocessed with mustache-sharp). You can write your own templates
+_Default_ `OutputRenderer` implementation is for an HTML document. Performance report is
+generated from a template file (preprocessed with mustache-sharp and it uses [Bootstrap](http://getbootstrap.com) and [Highcharts](http://www.highcharts.com)). You can write your own templates
 to customize report content and appearance or directly modify `DefaultTemplate.html`. Plain text
 reports are supported through `TextOutputRenderer` base class (which is also the base implementation
 for `HtmlOutputRenderer`.
@@ -206,5 +206,6 @@ for `HtmlOutputRenderer`.
 `HtmlOutputRenderer` has only two public properties: `Statistics` to set the set of analysis to
 perform and `TemplatePath` to set the full path of the HTML template to use to generate output report.
 
-Default template uses [Bootstrap](http://getbootstrap.com) and [Highcharts](http://www.highcharts.com) (via CDN).
+If you want to analyze raw data you can use `ExcelOutputRenderer` (which ignores `Statistics` property and always
+exports all measures).
 
