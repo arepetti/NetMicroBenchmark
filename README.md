@@ -64,6 +64,31 @@ public sealed class BackendTests {
 }
 ```
 
+In this library I did not want to be tied to a specific testing framework but note that you may write your own _finder_ class to extract all methods to benchmark (and eventually their performance specifications). Something similar to this:
+
+```C#
+[TestClass, Benchmark]
+public sealed class BackendTests {
+    [TestMethod]
+    public void PerformanceConstrainedDataProcessing() {
+        var engine = new BenchmarkEngine(new BenchmarkOptions(),  new Type[] { typeof(BackendTests) });
+        foreach (var benchmark in engine.Execute()) {
+            // Validate PerformanceContrainedAttribute constraints...
+        }
+    }
+    
+    [BenchmarkedMethod, PerformanceContrained(Maximum: 10)]
+    public void PerformSomeDataProcessing1() {
+      // Write here code you want to test
+    }
+
+    [BenchmarkedMethod, PerformanceContrained(Average: 2, MaximumDrift: 5)]
+    public void PerformSomeDataProcessing2() {
+      // Write here code you want to test
+    }
+}
+```
+
 ## How It Works
 Logic is simple and straightforward:
 * Each class is a separate benchmark and each method is a test which
