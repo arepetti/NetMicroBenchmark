@@ -25,6 +25,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using MicroBench.Engine;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -95,5 +96,23 @@ namespace AutomaticTest
 			
 			File.Delete(tempPath);
 		}
+
+        [TestMethod]
+        public void CanMeasureSingleMethod()
+        {
+            var result = BenchmarkEngine.ExecuteSingle(typeof(SingleBenchmark));
+            Assert.IsTrue(result >= TimeSpan.FromMilliseconds(1), "Average execution time cannot be smaller than minimum expected value.");
+            Assert.IsTrue(result <= TimeSpan.FromMilliseconds(10), "Average execution time cannot be too much higher than maximum expected value.");
+        }
+
+        private sealed class SingleBenchmark
+        {
+            private readonly Random _rnd = new Random();
+
+            public void MethodToBenchmark()
+            {
+                Thread.Sleep(1 + _rnd.Next(0, 5));
+            }
+        }
 	}
 }

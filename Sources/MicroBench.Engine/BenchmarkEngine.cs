@@ -72,6 +72,41 @@ namespace MicroBench.Engine
 			return outputPath;
 		}
 
+        /// <summary>
+        /// Executes one benchmark in the given type and calculates average execution time.
+        /// </summary>
+        /// <param name="type">
+        /// Type which contains the method to benchmark. This method must contain exactly one method to benchmark and
+        /// it may be decorated with <c>BenchmarkedMethodAttribute</c>. Its name has to start with
+        /// <c>Test</c> or to be the only public eligible method in the class.
+        /// </param>
+        /// <param name="options">Options, if omitted then default <see cref="BenchmarkOptions"/> are used.</param>
+        /// <returns>
+        /// The average execution time for the benchmark contained in the specified type.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// If <paramref name="type"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// If <paramref name="type"/> does not contain exactly one method to benchmark (public non-virtual instance method
+        /// with name that starts with <c>Test</c>, name constraint is not mandatory if there is only one public method).
+        /// </exception>
+        public static TimeSpan ExecuteSingle(Type type, BenchmarkOptions options = null)
+        {
+            var engine = new BenchmarkEngine(options ?? new BenchmarkOptions { SearchMethod = BencharkSearchMethod.Convention },
+                new Type[] { type });
+
+            var results = engine.Execute();
+            var benchmark = results.Single();
+            var benchmarkedMethod = benchmark.Methods.Single();
+            var measures = benchmarkedMethod.Measures.Select(x => x.Ticks).ToArray();
+
+            if (measures.Length == 0)
+                return TimeSpan.Zero;
+
+            return new TimeSpan(measures.Sum() / measures.Length);
+        }
+
 		/// <summary>
 		/// Creates a new <see cref="BenchmarkEngine"/> object searching for benchmarks in all specified assemblies.
 		/// </summary>
