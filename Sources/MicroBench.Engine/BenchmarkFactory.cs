@@ -117,8 +117,8 @@ namespace MicroBench.Engine
 			benchmark.Group = ResolveValue(descriptor, () => descriptor.Group, "");
 			benchmark.Name = ResolveValue(descriptor, () => descriptor.Name, type.Name);
 			benchmark.Description = ResolveValue(descriptor, () => descriptor.Description, "");
-			benchmark.Methods.AddRange(FindMethodsToBenchmark(type));
 			benchmark.SetUpMethods = GetInvokableMethods(type).Where(x => Attribute.IsDefined(x, typeof(SetUpBenchmarkAttribute))).ToArray();
+            benchmark.Methods.AddRange(FindMethodsToBenchmark(type));
 			benchmark.CleanUpMethods = GetInvokableMethods(type).Where(x => Attribute.IsDefined(x, typeof(CleanUpBenchmarkAttribute))).ToArray();
 
 			return benchmark;
@@ -127,8 +127,23 @@ namespace MicroBench.Engine
 		private readonly BenchmarkOptions _options;
 
 		private IEnumerable<BenchmarkedMethod> FindMethodsToBenchmark(Type type)
+        {
+            // We do not want to make things too complicate, if required search method yelds no results
+            // then we relax our rules to include eligible methods.
+            var methodsToBenchmark = FindMethodsToBenchmark(type, _options.SearchMethod).ToArray();
+            if (methodsToBenchmark.Length > 0)
+                return methodsToBenchmark;
+
+            // If no methods with attributes then at least let's try by convention (name). Note that this
+            // won't fallback to "Everything" (which is tried only if first search is by convention).
+            if (_options.SearchMethod == BencharkSearchMethod.Declarative)
+                return FindMethodsToBenchmark(type, BencharkSearchMethod.Convention);
+
+            return FindMethodsToBenchmark(type, BencharkSearchMethod.Everything);
+        }
+
+		private IEnumerable<BenchmarkedMethod> FindMethodsToBenchmark(Type type, BencharkSearchMethod searchMethod)
 		{
-			Debug.Assert(_options != null);
 			Debug.Assert(type != null);
 
 			// Every eligible method must be public, must not have a return type and must not have any parameter.
@@ -139,7 +154,7 @@ namespace MicroBench.Engine
 				// keep searching them using by convention (using defaults for non decorated methods).
 				var attribute = method.GetCustomAttribute<BenchmarkedMethodAttribute>();
 
-				if (_options.SearchMethod == BencharkSearchMethod.Convention)
+                if (searchMethod == BencharkSearchMethod.Convention)
 				{
 					// When by convention each bechmarked method must start with "Test".
 					if (!method.Name.StartsWith(BenchmarkMethodPrefix, StringComparison.InvariantCultureIgnoreCase))
@@ -147,7 +162,7 @@ namespace MicroBench.Engine
 
 					yield return CreateBenchmarkForMethod(method, attribute);
 				}
-				else if (_options.SearchMethod == BencharkSearchMethod.Declarative)
+                else if (searchMethod == BencharkSearchMethod.Declarative)
 				{
 					// When declarative each method must be decorated with [BenchmarkedMethod] attribute.
 					if (attribute == null)
@@ -155,7 +170,7 @@ namespace MicroBench.Engine
 
 					yield return CreateBenchmarkForMethod(method, attribute);
 				}
-				else if (_options.SearchMethod == BencharkSearchMethod.Declarative)
+                else if (searchMethod == BencharkSearchMethod.Everything)
 				{
 					// When discovering is BencharkSearchMethod.Everything then any eligible
 					// method in each type is considered a benchmark.
