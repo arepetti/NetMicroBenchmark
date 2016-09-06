@@ -135,7 +135,7 @@ non-generic class with a default constructor.
 When searching by convention a class must begin or end with `Benchmark`.
 
 ```C#
-public class IntegerFactorizationBenchmark {
+public sealed class IntegerFactorizationBenchmark {
   public void TestDixon() { }
   public void TestShor() { }
 }
@@ -145,7 +145,7 @@ When search is performed using a declarative syntax then each class must be deco
 
 ```C#
 [Benchmark]
-public class IntegerFactorization {
+public sealed class IntegerFactorization {
   [BenchmarkedMethod]
   public void Dixon() { }
 
@@ -173,7 +173,7 @@ AppDomain.CurrentDomain.SetData("__BenchmarkCrossDomainData",
     new MyCrossDomainServiceRepository());
 ```
 
-Note that cross-domain communication is slow then it must not be done only inside setup/cleanup methods, also don't
+Note that cross-domain communication is slow then it must be done only inside setup/cleanup methods, also don't
 forget that data you exchange must be derive from `MarshalByReRefObject` or marked as `[Serializable]`.
 
 ##Statistics
@@ -183,7 +183,7 @@ implementation also calculates few dispersion indices, they may be useful to det
 but also to have a better view of what happen in a complex scenario like this one:
 
 ```C#
-public class Benchmark {
+public sealed class Benchmark {
     public void SerialDownload() {
         foreach (var fileToDownload in GetFilesToDownload()) {
             DownloadFileWithHttp(fileToDownload.LocalPath, fileToDownload.ServerUrl);
@@ -239,7 +239,7 @@ If execution time is very short it may be significative to compare cumulated res
 var engine = new BenchmarkEngine(new BenchmarkOptions(),  new Type[] { benchmarkType });
 var benchmark = engine.Execute().Single();
 
-var measures = benchmark.Methods.Select(method => method.Measures.Average());
+var measures = benchmark.Methods.Select(method => method.Measures.Sum());
 ```
 
 In this example `measures` is an enumeration (where each item is the sum of all the execution times) and it may show a more significative difference between tested methods.
