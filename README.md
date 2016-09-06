@@ -231,7 +231,7 @@ exports all measures).
 
 ##Notes
 
-There may be cases where an averaged value is too small to be significative (or you see a big dispersion) or rounding error
+There may be cases where an averaged value is too small to be significative, you see a big dispersion or rounding errors
 are not negligible. 
 In those cases you should be careful to read benchmark results and you may want to interpolate different benchmarking methods.
 If execution time is very short it may be significative to compare cumulated results:
@@ -247,9 +247,9 @@ var measures = benchmark.Methods
   .ToArray();
 ```
 
-  In this example `measures` is an array (where each item is the sum of all the execution times) and it may show a more significative
-  differences between tested methods. Do not forget you are comparing a cumulative value: 10 ms for a test repeated 1000 times may
-  not be as high as it seems. 
+In this example `measures` is an array (where each item is the sum of all the execution times) and it may show a more significative
+differences between tested methods. Do not forget you are comparing a cumulative value: 10 ms for a test repeated 1000 times may
+not be as high as it seems. 
 
 Currently this engine does not support a straight measure of full execution time (useful to limit rounding errors) but you may
 get some useful results disabling AppDomain isolation and checking `Bechmark.ExecutionTime`. In this case do not forget to
