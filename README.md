@@ -45,6 +45,26 @@ Do you want to write your own fancy user interface to quickly write tests? Don't
 `BenchmarkEngine.SuiteProgressChanged` and `BenchmarkEngine.BenchmarkProgressChanged` events, tests may take a long
 time to run and users should be informed about what is going on.
 
+##Unit Testing Integration
+
+Sometimes you need to measure performance in your unit testing, you have some simplified methods for this:
+
+```C#
+[TestClass]
+public sealed class BackendTests {
+    [TestMethod]
+    public void EnsureMinimumPerformance() {
+      Assert.IsTrue(BenchmarkEngine.ExecuteSingle(typeof(Benchmark)) <= TimeSpan.FromMilliseconds(10));
+    }
+    
+    sealed class Benchmark {
+      public void Test() {
+        // Write here code you want to test
+      }
+    }
+}
+```
+
 ## How It Works
 Logic is simple and straightforward:
 * Each class is a separate benchmark and each method is a test which
