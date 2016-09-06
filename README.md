@@ -104,7 +104,7 @@ When searching by convention it _may_ be named starting with `Test` but if engin
 within a class then it will pick any eligible method regardless its name.
 
 ```C#
-public void TestAlgorithm1() { }
+public void TestDixon() { }
 ```
 
 When search is performed using a declarative syntax then each  method you want to measure
@@ -112,7 +112,7 @@ must be decorated with `BenchmarkedMethodAttribute`.
 
 ```C#
 [BenchmarkedMethod]
-public void Algorithm1() { }
+public void Dixon() { }
 ```
 
 By default test display name is method name but you can change it using `BenchmarkedMethodAttribute.Name` property
@@ -135,9 +135,9 @@ non-generic class with a default constructor.
 When searching by convention a class must begin or end with `Benchmark`.
 
 ```C#
-public class MyBenchmark {
-  public void TestAlgorithm1() { }
-  public void TestAlgorithm2() { }
+public class IntegerFactorizationBenchmark {
+  public void TestDixon() { }
+  public void TestShor() { }
 }
 ```
 
