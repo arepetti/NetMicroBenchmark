@@ -157,7 +157,7 @@ namespace MicroBench.Engine
 		{
 			Debug.Assert(engine != null);
 
-			var startTimestamp = DateTime.Now;
+			var startTimestamp = DateTime.UtcNow;
 
 			for (int i = 0; i < Methods.Count; ++i)
 			{
@@ -167,7 +167,7 @@ namespace MicroBench.Engine
 				BenchmarkPerformer.AccumulateResults(engine, this, Methods[i]);
 			}
 
-			ExecutionTime = DateTime.Now - startTimestamp;
+			ExecutionTime = DateTime.UtcNow - startTimestamp;
 		}
 
 		private readonly BenchmarkedMethodCollection _methods = new BenchmarkedMethodCollection();
