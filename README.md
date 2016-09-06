@@ -1,15 +1,14 @@
 # .NET μBenchmark
 This is a small tool to perform microbenchmarks (performance comparison of small code snippets) for .NET,
-it is not magic then do not expect you can write algorithms you want to compare and blindless run this benchmark
-to get meaningful results: you will not.
-
 Default output report looks like this but you can customize it in the way you prefer (or export gathered data
 to be analyzed in Microsoft Excel):
 
 ![Performance report example](https://raw.githubusercontent.com/arepetti/NetMicroBenchmark/master/ReportScreenshot.png)
 
+It is not magic then do not expect you can write algorithms you want to compare and blindless run this benchmark
+to get meaningful results: you will not.
 That said this tool is useful to have a first rough idea of code performance and get results in an easy to understand
-graphical format. Before writing your tests and trying to analyze results you should read one good tutorial about
+graphical format (if you always just checked average execution time then take a look to above charts, dispersion is as important as average). Before writing your tests and trying to analyze results you should read one good tutorial about
 microbenchmarks, especially to understand their limits. Also don't forget that this tool is not intended to
 facilitate output quality measurement but merely its computation performance.
 
@@ -238,9 +237,9 @@ If execution time is very short it may be significative to compare cumulated res
 
 ```C#
 var engine = new BenchmarkEngine(new BenchmarkOptions(),  new Type[] { benchmarkType });
-
 var benchmark = engine.Execute().Single();
-var measures = benchmark.Methods.Select(method => method.Average());
+
+var measures = benchmark.Methods.Select(method => method.Measures.Average());
 ```
 
 In this example `measures` is an enumeration (where each item is the sum of all the execution times) and it may show a more significative difference between tested methods.
