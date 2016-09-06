@@ -88,12 +88,10 @@ namespace MicroBench.Engine
 
                     yield return CreateBenchmarkForType(type, attribute);
                 }
-                else
-                {
-                    // When discovering is BencharkSearchMethod.Everything then any eligible
-                    // class in assembly catalog is considered a benchmark.
-                    yield return CreateBenchmarkForType(type, attribute);
-                }
+
+                // When discovering is BencharkSearchMethod.Everything then any eligible
+                // class in assembly catalog is considered a benchmark.
+                yield return CreateBenchmarkForType(type, attribute);
             }
         }
 
@@ -170,12 +168,10 @@ namespace MicroBench.Engine
 
                     yield return CreateBenchmarkForMethod(method, attribute);
                 }
-                else
-                {
-                    // When discovering is BencharkSearchMethod.Everything then any eligible
-                    // method in each type is considered a benchmark.
-                    yield return CreateBenchmarkForMethod(method, attribute);
-                }
+
+                // When discovering is BencharkSearchMethod.Everything then any eligible
+                // method in each type is considered a benchmark.
+                yield return CreateBenchmarkForMethod(method, attribute);
             }
         }
 
