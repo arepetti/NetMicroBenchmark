@@ -53,7 +53,7 @@ Sometimes you need to measure performance in your unit testing, you have some si
 [TestClass]
 public sealed class BackendTests {
     [TestMethod]
-    public void EnsureMinimumPerformance() {
+    public void MaximumExecutionTimeIs10Milliseconds() {
       Assert.IsTrue(BenchmarkEngine.ExecuteSingle(typeof(Benchmark)) <= TimeSpan.FromMilliseconds(10));
     }
     
