@@ -22,6 +22,7 @@
 //
 
 using System;
+using System.Linq;
 using System.Collections.ObjectModel;
 
 namespace MicroBench.Engine
@@ -33,5 +34,33 @@ namespace MicroBench.Engine
     [Serializable]
     public sealed class MeasureCollection : Collection<TimeSpan>
     {
+        /// <summary>
+        /// Calculates the sum of all measures in this collections.
+        /// </summary>
+        /// <returns>
+        /// The sum of all measures in this collection.
+        /// </returns>
+        public TimeSpan Sum()
+        {
+            if (Count == 0)
+                return TimeSpan.Zero;
+
+            return new TimeSpan(Items.Sum(x => x.Ticks));
+        }
+
+        /// <summary>
+        /// Calculates the average of all measures in this collections.
+        /// </summary>
+        /// <returns>
+        /// The average of all measures in this collection or <see cref="TimeSpan.Zero"/>
+        /// if this collection is empty.
+        /// </returns>
+        public TimeSpan Average()
+        {
+            if (Count == 0)
+                return TimeSpan.Zero;
+
+            return new TimeSpan(Items.Sum(x => x.Ticks) / Count);
+        }
     }
 }

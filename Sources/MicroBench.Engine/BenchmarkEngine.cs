@@ -96,15 +96,10 @@ namespace MicroBench.Engine
             var engine = new BenchmarkEngine(options ?? new BenchmarkOptions { SearchMethod = BencharkSearchMethod.Convention },
                 new Type[] { type });
 
-            var results = engine.Execute();
-            var benchmark = results.Single();
+            var benchmark = engine.Execute().Single();
             var benchmarkedMethod = benchmark.Methods.Single();
-            var measures = benchmarkedMethod.Measures.Select(x => x.Ticks).ToArray();
 
-            if (measures.Length == 0)
-                return TimeSpan.Zero;
-
-            return new TimeSpan(measures.Sum() / measures.Length);
+            return benchmarkedMethod.Measures.Average();
         }
 
         /// <summary>
