@@ -229,3 +229,29 @@ perform and `TemplatePath` to set the full path of the HTML template to use to g
 If you want to analyze raw data you can use `ExcelOutputRenderer` (which ignores `Statistics` property and always
 exports all measures).
 
+##Notes
+
+There may be cases where an averaged value is too small to be significative (or you see a big dispersion) or rounding error
+are not negligible. 
+In those cases you should be careful to read benchmark results and you may want to interpolate different benchmarking methods.
+If execution time is very short it may be significative to compare cumulated results:
+
+```C#
+var engine = new BenchmarkEngine(new BenchmarkOptions { SearchMethod = BencharkSearchMethod.Convention }, 
+  new Type[] { benchmarkType });
+
+var results = engine.Execute();
+var benchmark = results.Single();
+var measures = benchmark.Methods
+  .Select(method => new TimeSpan(method.Measures(x => x.Ticks).Sum()))
+  .ToArray();
+```
+
+  In this example `measures` is an array (where each item is the sum of all the execution times) and it may show a more significative
+  differences between tested methods. Do not forget you are comparing a cumulative value: 10 ms for a test repeated 1000 times may
+  not be as high as it seems. 
+
+Currently this engine does not support a straight measure of full execution time (useful to limit rounding errors) but you may
+get some useful results disabling AppDomain isolation and checking `Bechmark.ExecutionTime`. In this case do not forget to
+set a very high number of executions and to avoid initialization/cleanup methods with attributes (use ctor and dtor) because
+they are invoke through Reflection and it may skew results.
