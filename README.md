@@ -18,7 +18,7 @@ which are usually excluded from microbenchmarks. There are more complete and sop
 tests (because you probably also need to interpolate measures with system performance and resources) but you may
 use this tool also to perform a first indicative analysis.
 
-##First benchmark
+##First Benchmark
 To write your first benchmark you have to write a _discoverable_ class:
 
 ```C#
