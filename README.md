@@ -5,7 +5,7 @@ to be analyzed in Microsoft Excel):
 
 ![Performance report example](https://raw.githubusercontent.com/arepetti/NetMicroBenchmark/master/ReportScreenshot.png)
 
-It is not magic then do not expect you can write algorithms you want to compare and blindless run this benchmark
+It is not magic then do not expect you can write algorithms you want to compare and blindlessly run this benchmark
 to get meaningful results: you will not.
 That said this tool is useful to have a first rough idea of code performance and get results in an easy to understand
 graphical format (if you always just checked average execution time then take a look to above charts, dispersion is as important as average). Before writing your tests and trying to analyze results you should read one good tutorial about
