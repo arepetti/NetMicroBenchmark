@@ -248,10 +248,9 @@ var measures = benchmark.Methods
 ```
 
 In this example `measures` is an array (where each item is the sum of all the execution times) and it may show a more significative
-differences between tested methods. Do not forget you are comparing a cumulative value: 10 ms for a test repeated 1000 times may
+difference between tested methods. Do not forget you are comparing a cumulative value: 10 ms for a test repeated 1000 times may
 not be as high as it seems. 
 
-Currently this engine does not support a straight measure of full execution time (useful to limit rounding errors) but you may
-get some useful results disabling AppDomain isolation and checking `Bechmark.ExecutionTime`. In this case do not forget to
-set a very high number of executions and to avoid initialization/cleanup methods with attributes (use ctor and dtor) because
-they are invoke through Reflection and it may skew results.
+Currently this engine does not support a direct measure of full execution time repeating test methods N times without re-creating object instances (useful to limit rounding errors),
+you may get some useful results disabling AppDomain isolation and checking `Bechmark.ExecutionTime`. In this case do not forget to
+set a very high number of executions and to avoid initialization/cleanup methods with attributes (use ctor and `IDisposable.Dispose` as requried) because they are invoked through Reflection (skewing results).
