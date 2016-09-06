@@ -25,54 +25,54 @@ using System;
 
 namespace MicroBench
 {
-	/// <summary>
-	/// Indicates that a class represents a benchmark to execute.
-	/// </summary>
-	/// <remarks>
-	/// Class must not be abstract and must have a public default constructor. Use <see cref="BenchmarkedMethodAttribute"/>
-	/// to mark each method you want to benchmark and to compare to the others within this benchmark.
-	/// </remarks>
-	[Serializable]
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-	public sealed class BenchmarkAttribute : Attribute
-	{
-		/// <summary>
-		/// Gets/sets the friendly name of a group of benchmarks.
-		/// </summary>
-		/// <value>
-		/// Friendly name of a group of benchmarks. Output renderers may, for example, order and group
-		/// multiple benchmarks according to this property. Default value is <see langword="null"/>.
-		/// </value>
-		public string Group
-		{
-			get;
-			set;
-		}
+    /// <summary>
+    /// Indicates that a class represents a benchmark to execute.
+    /// </summary>
+    /// <remarks>
+    /// Class must not be abstract and must have a public default constructor. Use <see cref="BenchmarkedMethodAttribute"/>
+    /// to mark each method you want to benchmark and to compare to the others within this benchmark.
+    /// </remarks>
+    [Serializable]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    public sealed class BenchmarkAttribute : Attribute
+    {
+        /// <summary>
+        /// Gets/sets the friendly name of a group of benchmarks.
+        /// </summary>
+        /// <value>
+        /// Friendly name of a group of benchmarks. Output renderers may, for example, order and group
+        /// multiple benchmarks according to this property. Default value is <see langword="null"/>.
+        /// </value>
+        public string Group
+        {
+            get;
+            set;
+        }
 
-		/// <summary>
-		/// Gets/sets the friendly name of this benchmark.
-		/// </summary>
-		/// <value>
-		/// Friendly name of this benchmark, if omitted then type name will be used. This name will used
-		/// to refer to this benchmark. Default value is <see langword="null"/>.
-		/// </value>
-		public string Name
-		{
-			get;
-			set;
-		}
+        /// <summary>
+        /// Gets/sets the friendly name of this benchmark.
+        /// </summary>
+        /// <value>
+        /// Friendly name of this benchmark, if omitted then type name will be used. This name will used
+        /// to refer to this benchmark. Default value is <see langword="null"/>.
+        /// </value>
+        public string Name
+        {
+            get;
+            set;
+        }
 
-		/// <summary>
-		/// Gets/sets a custom and optional description for this benchmark.
-		/// </summary>
-		/// <value>
-		/// A custom and optional description for this benchmark, renderers may display this name
-		/// to describe the benchmark. Default value is <see langword="null"/>.
-		/// </value>
-		public string Description
-		{
-			get;
-			set;
-		}
-	}
+        /// <summary>
+        /// Gets/sets a custom and optional description for this benchmark.
+        /// </summary>
+        /// <value>
+        /// A custom and optional description for this benchmark, renderers may display this name
+        /// to describe the benchmark. Default value is <see langword="null"/>.
+        /// </value>
+        public string Description
+        {
+            get;
+            set;
+        }
+    }
 }

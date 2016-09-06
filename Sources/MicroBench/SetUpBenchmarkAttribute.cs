@@ -25,15 +25,15 @@ using System;
 
 namespace MicroBench
 {
-	/// <summary>
-	/// Marks e method of a class decorated with <see cref="BenchmarkAttribute"/> to be executed
-	/// to set-up benchmark data.
-	/// </summary>
-	/// <remarks>
-	/// This attribute is seldom used, benchmark class may initialize its own data inside constructor.
-	[Serializable]
-	[AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
-	public sealed class SetUpBenchmarkAttribute : Attribute
-	{
-	}
+    /// <summary>
+    /// Marks e method of a class decorated with <see cref="BenchmarkAttribute"/> to be executed
+    /// to set-up benchmark data.
+    /// </summary>
+    /// <remarks>
+    /// This attribute is seldom used, benchmark class may initialize its own data inside constructor.
+    [Serializable]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+    public sealed class SetUpBenchmarkAttribute : Attribute
+    {
+    }
 }

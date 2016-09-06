@@ -28,34 +28,34 @@ using System.Linq;
 
 namespace MicroBench.Engine
 {
-	sealed class BenchmarkFactoryFromTypes : BenchmarkFactory
-	{
-		public BenchmarkFactoryFromTypes(BenchmarkOptions options, IEnumerable<Type> types)
-			: base(options)
-		{
-			Debug.Assert(options != null);
-			Debug.Assert(types != null);
+    sealed class BenchmarkFactoryFromTypes : BenchmarkFactory
+    {
+        public BenchmarkFactoryFromTypes(BenchmarkOptions options, IEnumerable<Type> types)
+            : base(options)
+        {
+            Debug.Assert(options != null);
+            Debug.Assert(types != null);
 
-			if (types.Any(x => !IsEligibleBenchmarkType(x)))
-				throw new ArgumentException("Cannot use dynamic assemblies or assemblies loaded from a byte stream.");
+            if (types.Any(x => !IsEligibleBenchmarkType(x)))
+                throw new ArgumentException("Cannot use dynamic assemblies or assemblies loaded from a byte stream.");
 
-			_types = types;
-		}
+            _types = types;
+        }
 
-		public override Benchmark[] Create()
-		{
-			Debug.Assert(_types != null);
+        public override Benchmark[] Create()
+        {
+            Debug.Assert(_types != null);
 
-			var benchmarks = FindBenchmarks(_types, Options.SearchMethod).ToArray();
+            var benchmarks = FindBenchmarks(_types, Options.SearchMethod).ToArray();
 
-			// If I'm searching by convention and I didn't find any method then I relax this rule
-			// and I take any other eligible method regardless its name (see doc BencharkSearchMethod.Convention)
-			if (benchmarks.Length == 0 && Options.SearchMethod == BencharkSearchMethod.Convention)
-				benchmarks = FindBenchmarks(_types, BencharkSearchMethod.Everything).ToArray();
+            // If I'm searching by convention and I didn't find any method then I relax this rule
+            // and I take any other eligible method regardless its name (see doc BencharkSearchMethod.Convention)
+            if (benchmarks.Length == 0 && Options.SearchMethod == BencharkSearchMethod.Convention)
+                benchmarks = FindBenchmarks(_types, BencharkSearchMethod.Everything).ToArray();
 
-			return benchmarks;
-		}
+            return benchmarks;
+        }
 
-		private readonly IEnumerable<Type> _types;
-	}
+        private readonly IEnumerable<Type> _types;
+    }
 }

@@ -29,51 +29,51 @@ using System.Reflection;
 
 namespace MicroBench.Engine
 {
-	sealed class BenchmarkFactoryFromAssemblies : BenchmarkFactory
-	{
-		public BenchmarkFactoryFromAssemblies(BenchmarkOptions options, IEnumerable<Assembly> assemblies)
-			: base(options)
-		{
-			Debug.Assert(options != null);
-			Debug.Assert(assemblies != null);
+    sealed class BenchmarkFactoryFromAssemblies : BenchmarkFactory
+    {
+        public BenchmarkFactoryFromAssemblies(BenchmarkOptions options, IEnumerable<Assembly> assemblies)
+            : base(options)
+        {
+            Debug.Assert(options != null);
+            Debug.Assert(assemblies != null);
 
-			if (assemblies.Any(x => !IsEligibleAssembly(x)))
-				throw new ArgumentException("Cannot use dynamic assemblies or assemblies loaded from a byte stream.");
+            if (assemblies.Any(x => !IsEligibleAssembly(x)))
+                throw new ArgumentException("Cannot use dynamic assemblies or assemblies loaded from a byte stream.");
 
-			_assemblies = assemblies;
-		}
+            _assemblies = assemblies;
+        }
 
-		public override Benchmark[] Create()
-		{
-			Debug.Assert(_assemblies != null);
+        public override Benchmark[] Create()
+        {
+            Debug.Assert(_assemblies != null);
 
-			var benchmarks = _assemblies
-				.SelectMany(x => FindBenchmarks(x.GetExportedTypes().Where(IsEligibleBenchmarkType), Options.SearchMethod))
-				.ToArray();
+            var benchmarks = _assemblies
+                .SelectMany(x => FindBenchmarks(x.GetExportedTypes().Where(IsEligibleBenchmarkType), Options.SearchMethod))
+                .ToArray();
 
-			// If I'm searching by convention and I didn't find any method then I relax this rule
-			// and I take any other eligible method regardless its name (see doc BencharkSearchMethod.Convention)
-			if (benchmarks.Length == 0 && Options.SearchMethod == BencharkSearchMethod.Convention)
-			{
-				benchmarks = _assemblies
-					.SelectMany(x => FindBenchmarks(x.GetExportedTypes().Where(IsEligibleBenchmarkType), BencharkSearchMethod.Everything))
-					.ToArray();
-			}
+            // If I'm searching by convention and I didn't find any method then I relax this rule
+            // and I take any other eligible method regardless its name (see doc BencharkSearchMethod.Convention)
+            if (benchmarks.Length == 0 && Options.SearchMethod == BencharkSearchMethod.Convention)
+            {
+                benchmarks = _assemblies
+                    .SelectMany(x => FindBenchmarks(x.GetExportedTypes().Where(IsEligibleBenchmarkType), BencharkSearchMethod.Everything))
+                    .ToArray();
+            }
 
-			return benchmarks;
-		}
+            return benchmarks;
+        }
 
-		private readonly IEnumerable<Assembly> _assemblies;
+        private readonly IEnumerable<Assembly> _assemblies;
 
-		private bool IsEligibleAssembly(Assembly assembly)
-		{
-			Debug.Assert(assembly != null);
+        private bool IsEligibleAssembly(Assembly assembly)
+        {
+            Debug.Assert(assembly != null);
 
-			if (!Options.RunTestsInIsolation)
-				return true;
+            if (!Options.RunTestsInIsolation)
+                return true;
 
-			// This is required because of the way we execute benchmark loading assembly into another AppDomain.
-			return !assembly.IsDynamic && !String.IsNullOrEmpty(assembly.Location);
-		}
-	}
+            // This is required because of the way we execute benchmark loading assembly into another AppDomain.
+            return !assembly.IsDynamic && !String.IsNullOrEmpty(assembly.Location);
+        }
+    }
 }

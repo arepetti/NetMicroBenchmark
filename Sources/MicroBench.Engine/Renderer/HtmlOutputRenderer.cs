@@ -28,35 +28,35 @@ using Mustache;
 
 namespace MicroBench.Engine.Renderer
 {
-	/// <summary>
-	/// Specialization of <see cref="TextOutputRenderer"/> to create an HTML document
-	/// built using a mustache-sharp template.
-	/// </summary>
-	public sealed class HtmlOutputRenderer : TextOutputRenderer
-	{
-		/// <summary>
-		/// Name (without path) of the default HTML report.
-		/// </summary>
-		/// <remarks>
-		/// Template has one more available tag: <c>{{#join collection selector}}</c>.
-		/// </remarks>
-		public const string DefaultReportName = "DefaultReport.html";
+    /// <summary>
+    /// Specialization of <see cref="TextOutputRenderer"/> to create an HTML document
+    /// built using a mustache-sharp template.
+    /// </summary>
+    public sealed class HtmlOutputRenderer : TextOutputRenderer
+    {
+        /// <summary>
+        /// Name (without path) of the default HTML report.
+        /// </summary>
+        /// <remarks>
+        /// Template has one more available tag: <c>{{#join collection selector}}</c>.
+        /// </remarks>
+        public const string DefaultReportName = "DefaultReport.html";
 
-		// NOTE: order in Headers property (and assumption that Results dictionary also matches that order)
-		// is important (see both BasicStatistics and DefaultTemplate.html). This is a fragile solution
-		// but it works for this first "release". 
+        // NOTE: order in Headers property (and assumption that Results dictionary also matches that order)
+        // is important (see both BasicStatistics and DefaultTemplate.html). This is a fragile solution
+        // but it works for this first "release". 
 
-		protected override string EscapeString(string text)
-		{
-			return HttpUtility.HtmlEncode(text);
-		}
+        protected override string EscapeString(string text)
+        {
+            return HttpUtility.HtmlEncode(text);
+        }
 
-		protected override FormatCompiler CreateFormatCompiler()
-		{
-			var compiler = new FormatCompiler();
-			compiler.RegisterTag(new MustacheJoinTagDefinition(), true);
+        protected override FormatCompiler CreateFormatCompiler()
+        {
+            var compiler = new FormatCompiler();
+            compiler.RegisterTag(new MustacheJoinTagDefinition(), true);
 
-			return compiler;
-		}
-	}
+            return compiler;
+        }
+    }
 }

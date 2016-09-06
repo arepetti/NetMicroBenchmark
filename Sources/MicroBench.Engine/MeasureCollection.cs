@@ -26,12 +26,12 @@ using System.Collections.ObjectModel;
 
 namespace MicroBench.Engine
 {
-	/// <summary>
-	/// Represents a collection of measures (where a measure is the execution time
-	/// of a single run of each test).
-	/// </summary>
-	[Serializable]
-	public sealed class MeasureCollection : Collection<TimeSpan>
-	{
-	}
+    /// <summary>
+    /// Represents a collection of measures (where a measure is the execution time
+    /// of a single run of each test).
+    /// </summary>
+    [Serializable]
+    public sealed class MeasureCollection : Collection<TimeSpan>
+    {
+    }
 }

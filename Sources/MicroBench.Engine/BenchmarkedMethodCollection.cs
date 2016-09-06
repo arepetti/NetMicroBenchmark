@@ -28,18 +28,18 @@ using System.Diagnostics;
 
 namespace MicroBench.Engine
 {
-	/// <summary>
-	/// Represents a list of test to execute and compare within a specific <see cref="Benchmark"/>.
-	/// </summary>
-	[Serializable]
-	public sealed class BenchmarkedMethodCollection : Collection<BenchmarkedMethod>
-	{
-		internal void AddRange(IEnumerable<BenchmarkedMethod> methods)
-		{
-			Debug.Assert(methods != null && !methods.Any(x => x == null));
+    /// <summary>
+    /// Represents a list of test to execute and compare within a specific <see cref="Benchmark"/>.
+    /// </summary>
+    [Serializable]
+    public sealed class BenchmarkedMethodCollection : Collection<BenchmarkedMethod>
+    {
+        internal void AddRange(IEnumerable<BenchmarkedMethod> methods)
+        {
+            Debug.Assert(methods != null && !methods.Any(x => x == null));
 
-			foreach (var method in methods)
-				Add(method);
-		}
-	}
+            foreach (var method in methods)
+                Add(method);
+        }
+    }
 }

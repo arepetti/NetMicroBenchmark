@@ -29,97 +29,97 @@ using System.IO;
 
 namespace MicroBench.Engine.Renderer
 {
-	/// <summary>
-	/// Specialization of <see cref="OutputRenderer"/> to create a Microsoft Excel document
-	/// containing all raw measures.
-	/// </summary>
-	public sealed class ExcelOutputRenderer : OutputRenderer
-	{
-		public override byte[] Render(IEnumerable<Benchmark> benchmarks)
-		{
-			using (var document = CreateAndFillSpreadsheet(benchmarks))
-			{
-				return InMemoryDocumentToBytes(document);
-			}
-		}
+    /// <summary>
+    /// Specialization of <see cref="OutputRenderer"/> to create a Microsoft Excel document
+    /// containing all raw measures.
+    /// </summary>
+    public sealed class ExcelOutputRenderer : OutputRenderer
+    {
+        public override byte[] Render(IEnumerable<Benchmark> benchmarks)
+        {
+            using (var document = CreateAndFillSpreadsheet(benchmarks))
+            {
+                return InMemoryDocumentToBytes(document);
+            }
+        }
 
-		public override void RenderTo(string outputPath, IEnumerable<Benchmark> benchmarks)
-		{
-			Debug.Assert(benchmarks != null);
+        public override void RenderTo(string outputPath, IEnumerable<Benchmark> benchmarks)
+        {
+            Debug.Assert(benchmarks != null);
 
-			using (var document = CreateAndFillSpreadsheet(benchmarks))
-			{
-				document.SaveAs(outputPath);
-			}
-		}
+            using (var document = CreateAndFillSpreadsheet(benchmarks))
+            {
+                document.SaveAs(outputPath);
+            }
+        }
 
-		private static SpreadsheetLight.SLDocument CreateAndFillSpreadsheet(IEnumerable<Benchmark> benchmarks)
-		{
-			Debug.Assert(benchmarks != null);
+        private static SpreadsheetLight.SLDocument CreateAndFillSpreadsheet(IEnumerable<Benchmark> benchmarks)
+        {
+            Debug.Assert(benchmarks != null);
 
-			// NOTE: this renderer ignores Statistic property content, it may even be null because
-			// here we only export raw data.
+            // NOTE: this renderer ignores Statistic property content, it may even be null because
+            // here we only export raw data.
 
-			var document = new SpreadsheetLight.SLDocument();
+            var document = new SpreadsheetLight.SLDocument();
 
-			foreach (var benchmark in benchmarks)
-				AddWorksheetForBenchmark(document, benchmark);
+            foreach (var benchmark in benchmarks)
+                AddWorksheetForBenchmark(document, benchmark);
 
-			// SL can't change name of current worksheet then we left first default one empty and we delete it now.
-			DeleteFirstWorksheet(document);
+            // SL can't change name of current worksheet then we left first default one empty and we delete it now.
+            DeleteFirstWorksheet(document);
 
-			return document;
-		}
+            return document;
+        }
 
-		private static void AddWorksheetForBenchmark(SpreadsheetLight.SLDocument document, Benchmark benchmark)
-		{
-			Debug.Assert(document != null);
-			Debug.Assert(benchmark != null);
+        private static void AddWorksheetForBenchmark(SpreadsheetLight.SLDocument document, Benchmark benchmark)
+        {
+            Debug.Assert(document != null);
+            Debug.Assert(benchmark != null);
 
-			// Each benchmark has its own worksheet
-			document.AddWorksheet(benchmark.Name);
+            // Each benchmark has its own worksheet
+            document.AddWorksheet(benchmark.Name);
 
-			// First row is test name and rows under it are measures, each column is a separate test
-			int columnIndex = 1;
-			foreach (var method in benchmark.Methods)
-				WriteMeasuresForSingleTest(document, columnIndex++, method);
-		}
+            // First row is test name and rows under it are measures, each column is a separate test
+            int columnIndex = 1;
+            foreach (var method in benchmark.Methods)
+                WriteMeasuresForSingleTest(document, columnIndex++, method);
+        }
 
-		private static void WriteMeasuresForSingleTest(SpreadsheetLight.SLDocument document, int columnIndex, BenchmarkedMethod method)
-		{
-			Debug.Assert(document != null);
-			Debug.Assert(columnIndex > 0);
-			Debug.Assert(method != null);
+        private static void WriteMeasuresForSingleTest(SpreadsheetLight.SLDocument document, int columnIndex, BenchmarkedMethod method)
+        {
+            Debug.Assert(document != null);
+            Debug.Assert(columnIndex > 0);
+            Debug.Assert(method != null);
 
-			int rowIndex = 1;
+            int rowIndex = 1;
 
-			document.SetCellValue(rowIndex++, columnIndex, method.Name);
+            document.SetCellValue(rowIndex++, columnIndex, method.Name);
 
-			foreach (var measure in method.Measures)
-				document.SetCellValue(rowIndex++, columnIndex, measure.TotalMilliseconds);
-		}
+            foreach (var measure in method.Measures)
+                document.SetCellValue(rowIndex++, columnIndex, measure.TotalMilliseconds);
+        }
 
-		private static void DeleteFirstWorksheet(SpreadsheetLight.SLDocument document)
-		{
-			Debug.Assert(document != null);
+        private static void DeleteFirstWorksheet(SpreadsheetLight.SLDocument document)
+        {
+            Debug.Assert(document != null);
 
-			// If we have just one worksheet then test was empty (!) or something went wrong,
-			// just do nothing and let caller manage an erroneous situation (if any)
-			var worksheets = document.GetWorksheetNames();
-			if (worksheets.Count > 1)
-				document.DeleteWorksheet(worksheets[0]);
-		}
+            // If we have just one worksheet then test was empty (!) or something went wrong,
+            // just do nothing and let caller manage an erroneous situation (if any)
+            var worksheets = document.GetWorksheetNames();
+            if (worksheets.Count > 1)
+                document.DeleteWorksheet(worksheets[0]);
+        }
 
-		private static byte[] InMemoryDocumentToBytes(SpreadsheetLight.SLDocument document)
-		{
-			Debug.Assert(document != null);
+        private static byte[] InMemoryDocumentToBytes(SpreadsheetLight.SLDocument document)
+        {
+            Debug.Assert(document != null);
 
-			using (var stream = new MemoryStream())
-			{
-				document.SaveAs(stream);
+            using (var stream = new MemoryStream())
+            {
+                document.SaveAs(stream);
 
-				return stream.ToArray();
-			}
-		}
-	}
+                return stream.ToArray();
+            }
+        }
+    }
 }

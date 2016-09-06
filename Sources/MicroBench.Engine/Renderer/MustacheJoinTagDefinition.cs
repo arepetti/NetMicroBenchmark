@@ -32,82 +32,82 @@ using Mustache;
 
 namespace MicroBench.Engine.Renderer
 {
-	/// <summary>
-	/// Definition for mustache-sharp of a new custom tag {{#join}}.
-	/// </summary>
-	/// <remarks>
-	/// It represents a new {{#join collection selector}} tag used to create a new string concatenating items of "collection"
-	/// (separated by comma). For each element value is calculated getting value of a property using "selector" (dot separated
-	/// list of properties), if omitted item itself is used. Conversion to string is made using invariant culture and string
-	/// escaping is performed according to JavaScript rules.
-	/// </remarks>
-	sealed class MustacheJoinTagDefinition : InlineTagDefinition
-	{
-		public MustacheJoinTagDefinition()
-			: base("join")
-		{
-		}
+    /// <summary>
+    /// Definition for mustache-sharp of a new custom tag {{#join}}.
+    /// </summary>
+    /// <remarks>
+    /// It represents a new {{#join collection selector}} tag used to create a new string concatenating items of "collection"
+    /// (separated by comma). For each element value is calculated getting value of a property using "selector" (dot separated
+    /// list of properties), if omitted item itself is used. Conversion to string is made using invariant culture and string
+    /// escaping is performed according to JavaScript rules.
+    /// </remarks>
+    sealed class MustacheJoinTagDefinition : InlineTagDefinition
+    {
+        public MustacheJoinTagDefinition()
+            : base("join")
+        {
+        }
 
-		protected override IEnumerable<TagParameter> GetParameters()
-		{
-			return new TagParameter[] { new TagParameter("collection"), new TagParameter("selector") { IsRequired = false } };
-		}
+        protected override IEnumerable<TagParameter> GetParameters()
+        {
+            return new TagParameter[] { new TagParameter("collection"), new TagParameter("selector") { IsRequired = false } };
+        }
 
-		public override void GetText(TextWriter writer, Dictionary<string, object> arguments, Scope context)
-		{
-			var collection = (System.Collections.IEnumerable)arguments["collection"];
-			var selector = arguments.ContainsKey("selector") ? (string)arguments["selector"] : "";
+        public override void GetText(TextWriter writer, Dictionary<string, object> arguments, Scope context)
+        {
+            var collection = (System.Collections.IEnumerable)arguments["collection"];
+            var selector = arguments.ContainsKey("selector") ? (string)arguments["selector"] : "";
 
-			writer.Write(String.Join(", ", collection.Cast<object>().Select(o => ToJavaScriptToken(o, selector))));
-		}
+            writer.Write(String.Join(", ", collection.Cast<object>().Select(o => ToJavaScriptToken(o, selector))));
+        }
 
-		private static string ToJavaScriptToken(object obj, string selector)
-		{
-			if (obj == null)
-				return "";
+        private static string ToJavaScriptToken(object obj, string selector)
+        {
+            if (obj == null)
+                return "";
 
-			return ToJavaScriptToken(GetPropertyValue(obj, selector));
-		}
+            return ToJavaScriptToken(GetPropertyValue(obj, selector));
+        }
 
-		private static string ToJavaScriptToken(object value)
-		{
-			if (value == null)
-				return "";
+        private static string ToJavaScriptToken(object value)
+        {
+            if (value == null)
+                return "";
 
-			return HttpUtility.JavaScriptStringEncode(
-				Convert.ToString(value, CultureInfo.InvariantCulture),
-				value is string);
-		}
+            return HttpUtility.JavaScriptStringEncode(
+                Convert.ToString(value, CultureInfo.InvariantCulture),
+                value is string);
+        }
 
-		private static object GetPropertyValue(object obj, string selector)
-		{
-			Debug.Assert(obj != null);
+        private static object GetPropertyValue(object obj, string selector)
+        {
+            Debug.Assert(obj != null);
 
-			if (String.IsNullOrWhiteSpace(selector))
-				return obj;
+            if (String.IsNullOrWhiteSpace(selector))
+                return obj;
 
-			if (selector.Contains("."))
-			{
-				int separatorIndex = selector.IndexOf(".");
-				string propertyName = selector.Substring(0, separatorIndex);
+            if (selector.Contains("."))
+            {
+                int separatorIndex = selector.IndexOf(".");
+                string propertyName = selector.Substring(0, separatorIndex);
 
-				return GetPropertyValue(GetPropertyValueCore(obj, propertyName),
-					selector.Substring(separatorIndex + 1));
-			}
+                return GetPropertyValue(GetPropertyValueCore(obj, propertyName),
+                    selector.Substring(separatorIndex + 1));
+            }
 
-			return GetPropertyValueCore(obj, selector);
-		}
+            return GetPropertyValueCore(obj, selector);
+        }
 
-		private static object GetPropertyValueCore(object obj, string propertyName)
-		{
-			Debug.Assert(obj != null);
-			Debug.Assert(!String.IsNullOrWhiteSpace(propertyName));
+        private static object GetPropertyValueCore(object obj, string propertyName)
+        {
+            Debug.Assert(obj != null);
+            Debug.Assert(!String.IsNullOrWhiteSpace(propertyName));
 
-			var property = obj.GetType().GetProperty(propertyName);
-			if (property == null)
-				throw new ArgumentException(String.Format("Cannot find property {0} on object {1}", propertyName, obj.GetType()));
-			
-			return property.GetValue(obj);
-		}
-	}
+            var property = obj.GetType().GetProperty(propertyName);
+            if (property == null)
+                throw new ArgumentException(String.Format("Cannot find property {0} on object {1}", propertyName, obj.GetType()));
+
+            return property.GetValue(obj);
+        }
+    }
 }

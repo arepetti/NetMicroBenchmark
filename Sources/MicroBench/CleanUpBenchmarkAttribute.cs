@@ -25,17 +25,17 @@ using System;
 
 namespace MicroBench
 {
-	/// <summary>
-	/// Marks e method of a class decorated with <see cref="BenchmarkAttribute"/> to be executed
-	/// to clean-up benchmark data.
-	/// </summary>
-	/// <remarks>
-	/// This attribute is seldom used, benchmark class may implement <see cref="IDisposable"/>
-	/// pattern instead.
-	/// </remarks>
-	[Serializable]
-	[AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
-	public sealed class CleanUpBenchmarkAttribute : Attribute
-	{
-	}
+    /// <summary>
+    /// Marks e method of a class decorated with <see cref="BenchmarkAttribute"/> to be executed
+    /// to clean-up benchmark data.
+    /// </summary>
+    /// <remarks>
+    /// This attribute is seldom used, benchmark class may implement <see cref="IDisposable"/>
+    /// pattern instead.
+    /// </remarks>
+    [Serializable]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+    public sealed class CleanUpBenchmarkAttribute : Attribute
+    {
+    }
 }

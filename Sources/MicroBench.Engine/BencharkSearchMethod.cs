@@ -25,29 +25,29 @@ using System;
 
 namespace MicroBench.Engine
 {
-	/// <summary>
-	/// Search method to find benchmarks (classes) and tests (methods).
-	/// </summary>
-	public enum BencharkSearchMethod
-	{
-		/// <summary>
-		/// Attributes <see cref="BenchmarkAttribute"/> and <see cref="BenchmarkedMethodAttribute"/>
-		/// are used.
-		/// </summary>
-		Declarative,
-		
-		/// <summary>
-		/// Method and classes are found by convention. Benchmarks must be public not abstract classes
-		/// with public default constructor and they must start or end with <c>Benchmark</c>.
-		/// Methods must be public, non virtual, parameterless, without return value and start with <c>Test</c>
-		/// but if there is not any eligible methods then any method which satisfies the other rules is used
-		/// regardless its name. Attributes may still be used to override default naming convention.
-		/// </summary>
-		Convention,
+    /// <summary>
+    /// Search method to find benchmarks (classes) and tests (methods).
+    /// </summary>
+    public enum BencharkSearchMethod
+    {
+        /// <summary>
+        /// Attributes <see cref="BenchmarkAttribute"/> and <see cref="BenchmarkedMethodAttribute"/>
+        /// are used.
+        /// </summary>
+        Declarative,
 
-		/// <summary>
-		/// As <see cref="BenchmarkSearchMethod.Convention"/> but without naming restrictions.
-		/// </summary>
-		Everything,
-	}
+        /// <summary>
+        /// Method and classes are found by convention. Benchmarks must be public not abstract classes
+        /// with public default constructor and they must start or end with <c>Benchmark</c>.
+        /// Methods must be public, non virtual, parameterless, without return value and start with <c>Test</c>
+        /// but if there is not any eligible methods then any method which satisfies the other rules is used
+        /// regardless its name. Attributes may still be used to override default naming convention.
+        /// </summary>
+        Convention,
+
+        /// <summary>
+        /// As <see cref="BenchmarkSearchMethod.Convention"/> but without naming restrictions.
+        /// </summary>
+        Everything,
+    }
 }
