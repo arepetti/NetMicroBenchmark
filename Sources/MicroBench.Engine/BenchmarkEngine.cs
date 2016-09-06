@@ -95,7 +95,7 @@ namespace MicroBench.Engine
         {
             var engine = new BenchmarkEngine(options ?? new BenchmarkOptions { SearchMethod = BencharkSearchMethod.Convention },
                 new Type[] { type });
-
+            
             var benchmark = engine.Execute().Single();
             var benchmarkedMethod = benchmark.Methods.Single();
 

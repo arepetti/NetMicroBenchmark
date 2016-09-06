@@ -29,13 +29,11 @@ using System.Reflection;
 
 namespace MicroBench.Engine
 {
-    /// <summary>
+    /// <devdoc>
     /// Base class for factory objects to create benchmarks (<see cref="Benchmark"/>) from a given input set.
-    /// </summary>
-    /// <remarks>
     /// All required fields (just for example the number of repetitions
     /// for each test) are filled from all supported sources (attributes, options and defaults).
-    /// </remarks>
+    /// </devdoc>
     abstract class BenchmarkFactory
     {
         protected BenchmarkFactory(BenchmarkOptions options)
@@ -88,10 +86,12 @@ namespace MicroBench.Engine
 
                     yield return CreateBenchmarkForType(type, attribute);
                 }
-
-                // When discovering is BencharkSearchMethod.Everything then any eligible
-                // class in assembly catalog is considered a benchmark.
-                yield return CreateBenchmarkForType(type, attribute);
+                else
+                {
+                    // When discovering is BencharkSearchMethod.Everything then any eligible
+                    // class in assembly catalog is considered a benchmark.
+                    yield return CreateBenchmarkForType(type, attribute);
+                }
             }
         }
 
@@ -126,6 +126,8 @@ namespace MicroBench.Engine
 
         private IEnumerable<BenchmarkedMethod> FindMethodsToBenchmark(Type type)
         {
+            Debug.Assert(_options != null);
+
             // We do not want to make things too complicate, if required search method yelds no results
             // then we relax our rules to include eligible methods.
             var methodsToBenchmark = FindMethodsToBenchmark(type, _options.SearchMethod).ToArray();
@@ -136,7 +138,7 @@ namespace MicroBench.Engine
             // won't fallback to "Everything" (which is tried only if first search is by convention).
             if (_options.SearchMethod == BencharkSearchMethod.Declarative)
                 return FindMethodsToBenchmark(type, BencharkSearchMethod.Convention);
-
+            
             return FindMethodsToBenchmark(type, BencharkSearchMethod.Everything);
         }
 
@@ -168,14 +170,16 @@ namespace MicroBench.Engine
 
                     yield return CreateBenchmarkForMethod(method, attribute);
                 }
-
-                // When discovering is BencharkSearchMethod.Everything then any eligible
-                // method in each type is considered a benchmark.
-                yield return CreateBenchmarkForMethod(method, attribute);
+                else
+                {
+                    // When discovering is BencharkSearchMethod.Everything then any eligible
+                    // method in each type is considered a benchmark.
+                    yield return CreateBenchmarkForMethod(method, attribute);
+                }
             }
         }
 
-        private IEnumerable<MethodInfo> GetInvokableMethods(Type type)
+        private static IEnumerable<MethodInfo> GetInvokableMethods(Type type)
         {
             return type.GetMethods().Where(IsInvokableMethod);
         }
@@ -217,7 +221,8 @@ namespace MicroBench.Engine
                 var value = valueFromAttribute();
 
                 // Dirty way to ignore values from descriptor which are invalid
-                if (!(typeof(T) == typeof(string) && String.IsNullOrWhiteSpace(value as string)))
+                bool isNullOrEmptyString = typeof(T) == typeof(string) && String.IsNullOrWhiteSpace(value as string);
+                if (!isNullOrEmptyString)
                     return value;
             }
 
