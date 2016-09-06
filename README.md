@@ -237,19 +237,14 @@ In those cases you should be careful to read benchmark results and you may want 
 If execution time is very short it may be significative to compare cumulated results:
 
 ```C#
-var engine = new BenchmarkEngine(new BenchmarkOptions { SearchMethod = BencharkSearchMethod.Convention }, 
-  new Type[] { benchmarkType });
+var engine = new BenchmarkEngine(new BenchmarkOptions(),  new Type[] { benchmarkType });
 
-var results = engine.Execute();
-var benchmark = results.Single();
-var measures = benchmark.Methods
-  .Select(method => new TimeSpan(method.Measures(x => x.Ticks).Sum()))
-  .ToArray();
+var benchmark = engine.Execute().Single();
+var measures = benchmark.Methods.Select(method => method.Average());
 ```
 
-In this example `measures` is an array (where each item is the sum of all the execution times) and it may show a more significative
-difference between tested methods. Do not forget you are comparing a cumulative value: 10 ms for a test repeated 1000 times may
-not be as high as it seems. 
+In this example `measures` is an enumeration (where each item is the sum of all the execution times) and it may show a more significative difference between tested methods.
+Do not forget you are comparing a cumulative value: 10 ms for a test repeated 1000 times may not be as high as it seems. 
 
 Currently this engine does not support a direct measure of full execution time repeating test methods N times without re-creating object instances (useful to limit rounding errors),
 you may get some useful results disabling AppDomain isolation and checking `Bechmark.ExecutionTime`. In this case do not forget to
